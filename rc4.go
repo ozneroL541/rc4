@@ -1,7 +1,7 @@
 package rc4
 
 /**
- * RC4 array length constant. The RC4 algorithm uses a state array of 256 bytes.
+ * RC4 array length constant.
  */
 const RC4_ARRAY_LEN = 256
 
@@ -21,12 +21,16 @@ func swap(a, b *byte) {
  * @return: The initialized state array S.
  */
 func ksa(s []byte) []byte {
+	/* State array */
 	S := make([]byte, RC4_ARRAY_LEN)
 	for i := range RC4_ARRAY_LEN {
+		/* Initialize S with values from 0 to 255 */
 		S[i] = byte(i)
 	}
+	/* Key scheduling */
 	j := byte(0)
 	for i := range RC4_ARRAY_LEN {
+		/* Update j based on the current state and key */
 		k := s[i%len(s)]
 		j = byte((int(j) + int(S[i]) + int(k)) % RC4_ARRAY_LEN)
 		swap(&S[i], &S[j])
@@ -41,9 +45,12 @@ func ksa(s []byte) []byte {
  * @param j: The index j (passed by reference).
  * @return: The next byte of the keystream.
  */
-func gen(S []byte, i, j *byte) byte {
+func gen(S []byte, i *byte, j *byte) byte {
+	/* Update i */
 	*i = byte((int(*i) + 1) % RC4_ARRAY_LEN)
+	/* Update j based on the current state */
 	*j = byte((int(*j) + int(S[*i])) % RC4_ARRAY_LEN)
+	/* Swap the values at indices i and j in the state array */
 	swap(&S[*i], &S[*j])
 	return S[(int(S[*i])+int(S[*j]))%RC4_ARRAY_LEN]
 }
@@ -58,10 +65,14 @@ func gen(S []byte, i, j *byte) byte {
  * @return: The encrypted or decrypted data.
  */
 func RC4(s []byte, data []byte) []byte {
+	/* State array */
 	S := ksa(s)
 	var i, j byte
 	for n := range data {
-		nextByte := gen(S, &i, &j) // "nextByte" of the keystream
+		/* "nextByte" of the keystream */
+		nextByte := gen(S, &i, &j)
+		/* XOR the data with the keystream byte
+		to encrypt/decrypt */
 		data[n] ^= nextByte
 	}
 	return data
