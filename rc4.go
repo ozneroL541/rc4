@@ -50,7 +50,9 @@ func gen(S []byte, i, j *byte) byte {
 
 /**
  * Encrypts or decrypts the data using the RC4 algorithm.
- * The same function is used for both encryption and decryption since RC4 is a symmetric stream cipher.
+ * The same function is used for both encryption and decryption
+ * since RC4 generates the same keystream for both operations
+ * and the XOR operation is its own inverse.
  * @param s: The key used for encryption/decryption.
  * @param data: The data to be encrypted or decrypted.
  * @return: The encrypted or decrypted data.
