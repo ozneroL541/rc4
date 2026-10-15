@@ -3,7 +3,7 @@ package rc4
 /**
  * RC4 array length constant.
  */
-const RC4_ARRAY_LEN = 256
+const RC4_ARRAY_LEN uint16 = 256
 
 /**
  * Swaps the values of two bytes.
@@ -31,8 +31,8 @@ func ksa(s []byte) []byte {
 	j := byte(0)
 	for i := range RC4_ARRAY_LEN {
 		/* Update j based on the current state and key */
-		k := s[i%len(s)]
-		j = byte((int(j) + int(S[i]) + int(k)) % RC4_ARRAY_LEN)
+		k := s[i%uint16(len(s))]
+		j = byte((uint16(j) + uint16(S[i]) + uint16(k)) % RC4_ARRAY_LEN)
 		swap(&S[i], &S[j])
 	}
 	return S
@@ -47,12 +47,12 @@ func ksa(s []byte) []byte {
  */
 func gen(S []byte, i *byte, j *byte) byte {
 	/* Update i */
-	*i = byte((int(*i) + 1) % RC4_ARRAY_LEN)
+	*i = byte((uint16(*i) + 1) % RC4_ARRAY_LEN)
 	/* Update j based on the current state */
-	*j = byte((int(*j) + int(S[*i])) % RC4_ARRAY_LEN)
+	*j = byte((uint16(*j) + uint16(S[*i])) % RC4_ARRAY_LEN)
 	/* Swap the values at indices i and j in the state array */
 	swap(&S[*i], &S[*j])
-	return S[(int(S[*i])+int(S[*j]))%RC4_ARRAY_LEN]
+	return S[(uint16(S[*i])+uint16(S[*j]))%RC4_ARRAY_LEN]
 }
 
 /**

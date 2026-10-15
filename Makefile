@@ -1,4 +1,4 @@
-.PHONY lib build test clean
+.PHONY: lib build test clean
 
 BIN_DIR=bin
 
