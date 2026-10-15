@@ -6,13 +6,6 @@ RC4 Go implementation
 > This is just a Proof of Concept, not an actual secure implementation.
 > Furthermore RC4 is a deprecated cipher and its insecurity is worldwide recognized and proven.
 
-## Usage
-```go
-import "github.com/ozneroL541/rc4"
-
-// TODO
-```
-
 ## Authors
 - Lorenzo Radice @ozneroL541
 
